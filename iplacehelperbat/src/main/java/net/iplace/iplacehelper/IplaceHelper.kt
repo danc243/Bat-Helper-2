@@ -1,6 +1,7 @@
 package net.iplace.iplacehelper
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import io.reactivex.disposables.Disposable
@@ -13,6 +14,7 @@ import android.os.Build
 import android.support.annotation.RequiresApi
 import android.support.v7.app.AppCompatActivity
 import android.telephony.TelephonyManager
+import net.iplace.iplacehelper.dialogs.ErrorDialog
 import net.iplace.iplacehelper.models.Login
 import retrofit2.Callback
 
@@ -44,6 +46,7 @@ class IplaceHelper {
 
         }
 
+        @SuppressLint("MissingPermission")
         @RequiresApi(Build.VERSION_CODES.O)
         fun getIMEI(context: AppCompatActivity): String? {
             try {
@@ -61,32 +64,10 @@ class IplaceHelper {
         }
 
 
-//        fun getRoutesExample(callback: (ArrayList<RouteExample>?) -> Unit) {
-//
-//            val header = "iplacetest@ldapudem.local:159753:351871085738622"
-//            val routeCall = batAPIService.getRoutes(header)
-//            routeCall.enqueue(object : retrofit2.Callback<String> {
-//
-//                override fun onFailure(call: Call<String>?, t: Throwable?) {
-//                    t?.let {
-//                        Log.d("Error", t.localizedMessage)
-//                    }
-//                }
-//                override fun onResponse(call: Call<String>?, response: Response<String>?) {
-//                    response?.let {
-//                        if (it.isSuccessful) {
-//
-//                            response.body()?.let {
-//                                RouteExample.handlerResult(callback, it)
-//                            }
-//
-//                        }
-//                    }
-//                }
-//            })
-//
-//
-//        }
+        fun validateEditText() {
+
+        }
+
 
         fun getResult(json: String): Int {
             val obj = JSONObject(json)
@@ -94,7 +75,13 @@ class IplaceHelper {
             return if (res.isNotEmpty() || res.isNotBlank()) res.toInt() else 0
         }
 
-        fun login(callback: (Login?) -> Unit) {
+        fun getMessage(json: String): String {
+            val obj = JSONObject(json)
+            val message = obj.getString("message")
+            return if (message.isNotBlank() || message.isNotEmpty()) message else "No Message"
+        }
+
+        fun login(callback: (Login?) -> Unit, context: AppCompatActivity, user: String, password: String) {
             val body = HashMap<String, String>()
             body.set("login", "adm")
             body.set("password", "321")
@@ -105,6 +92,7 @@ class IplaceHelper {
                 override fun onFailure(call: Call<String>?, t: Throwable?) {
                     t?.let {
                         Log.e(error, it.localizedMessage)
+                        ErrorDialog.newErrorDialog(context, it.localizedMessage)
                     }
                 }
 
@@ -112,11 +100,11 @@ class IplaceHelper {
                     response?.let {
                         if (it.isSuccessful) {
                             it.body()?.let {
-                                if (getResult(it) > 0)
+                                if (getResult(it) > 0) {
                                     callback(Login.handleResult(it))
-                                else
-                                    //TODO Show Message Error
-                                    callback(null)
+                                } else {
+                                    ErrorDialog.newErrorDialog(context, getMessage(it))
+                                }
                             }
                         }
                     }
