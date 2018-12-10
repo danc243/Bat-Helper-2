@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/BATLogin.iml" filepath="$PROJECT_DIR$/BATLogin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\p4co0\Documents\personal\Iplace 2018\BAT\BATLogin\iplacehelperbat\iplacehelper.iml" filepath="C:\Users\p4co0\Documents\personal\Iplace 2018\BAT\BATLogin\iplacehelperbat\iplacehelper.iml" />
+      <module fileurl="file://$PROJECT_DIR$/iplacehelperbat/iplacehelperbat.iml" filepath="$PROJECT_DIR$/iplacehelperbat/iplacehelperbat.iml" />
+    </modules>
+  </component>
+</project>
