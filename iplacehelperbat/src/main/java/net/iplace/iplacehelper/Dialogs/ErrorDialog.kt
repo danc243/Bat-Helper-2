@@ -14,8 +14,6 @@ class ErrorDialog {
             val builder = AlertDialog.Builder(context)
 
 
-
-
         }
     }
 }

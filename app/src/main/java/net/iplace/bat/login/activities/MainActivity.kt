@@ -6,6 +6,7 @@ import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import net.iplace.bat.login.R
 import net.iplace.iplacehelper.IplaceHelper
@@ -19,7 +20,7 @@ class MainActivity : AppCompatActivity() {
 
         IplaceHelper.login {
             it?.let {
-
+                Toast.makeText(this, it.aplicaciones.size.toString(), Toast.LENGTH_SHORT).show()
             }
         }
 
