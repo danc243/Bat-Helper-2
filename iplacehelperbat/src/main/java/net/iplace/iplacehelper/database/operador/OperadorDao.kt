@@ -11,7 +11,7 @@ import android.arch.persistence.room.Query
 @Dao
 interface OperadorDao {
     @Query("SELECT * FROM ${Operador.table_name}")
-    fun getAll(): ArrayList<Operador>
+    fun getAll(): List<Operador>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg operadores: Operador)

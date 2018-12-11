@@ -11,8 +11,8 @@ import android.arch.persistence.room.Query
 @Dao
 interface UnidadDao {
     @Query("SELECT * FROM ${Unidad.table_name}")
-    fun getAll(): ArrayList<Unidad>
+    fun getAll(): List<Unidad>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg unidades: Unidad)
+    fun insertAll(unidades: List<Unidad>)
 }

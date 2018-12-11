@@ -12,7 +12,7 @@ import android.arch.persistence.room.Query
 interface TransportistaDao {
 
     @Query("SELECT * FROM ${Transportista.table_name}")
-    fun getAll(): ArrayList<Transportista>
+    fun getAll(): List<Transportista>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg tranportistas: Transportista)

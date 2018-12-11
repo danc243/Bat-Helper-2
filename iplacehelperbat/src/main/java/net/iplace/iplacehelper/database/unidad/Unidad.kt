@@ -3,6 +3,8 @@ package net.iplace.iplacehelper.database.unidad
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 
 /**
@@ -21,8 +23,14 @@ data class Unidad(
     companion object {
         const val table_name = "table_unidad"
 
+        fun toObj(json: String): Unidad {
+            return Gson().fromJson(json, Unidad::class.java)
+        }
 
-
+        fun toList(json: String): List<Unidad>? {
+            val type = object : TypeToken<List<Unidad>>() {}.type
+            return Gson().fromJson(json, type)
+        }
 
 
     }

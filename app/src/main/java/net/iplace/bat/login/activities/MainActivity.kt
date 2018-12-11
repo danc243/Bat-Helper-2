@@ -4,6 +4,7 @@ package net.iplace.bat.login.activities
 import android.arch.persistence.room.Room
 import android.content.Context
 import android.content.Intent
+import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -13,7 +14,9 @@ import net.iplace.iplacehelper.HelperUtils
 import net.iplace.iplacehelper.database.AppDatabase
 import net.iplace.iplacehelper.database.Converters
 import net.iplace.iplacehelper.database.unidad.Unidad
+import net.iplace.iplacehelper.dialogs.ProgressDialog
 import net.iplace.iplacehelper.retrofit.HelperRetrofit
+import org.jetbrains.anko.doAsync
 
 class MainActivity : AppCompatActivity() {
 
@@ -54,13 +57,21 @@ class MainActivity : AppCompatActivity() {
                 "   }\n" +
                 "]"
 
+        Unidad.toList(s)?.let {
+            doAsync {
+                val dialog = ProgressDialog.newProgressDialog(this@MainActivity, "Cargando Catálogos")
+                dialog.show()
+                db.unidadDao().insertAll(it)
+                val unidades = db.unidadDao().getAll()
 
 
 
+                dialog.dismiss()
+            }
+        }
 
 
     }
-
 
     companion object {
         fun newInstance(context: Context) {

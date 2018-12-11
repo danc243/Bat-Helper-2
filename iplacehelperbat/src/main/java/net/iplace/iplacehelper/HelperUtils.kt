@@ -3,6 +3,7 @@ package net.iplace.iplacehelper
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
+import android.preference.PreferenceManager
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
@@ -18,9 +19,12 @@ import net.iplace.iplacehelper.retrofit.HelperRetrofit
  */
 class HelperUtils {
     companion object {
+        private const val sharedPreferencesKey = "iplaceHelperSPK"
+        private const val spkVersionCode = "database_version_code_key"
 
         fun validateEditText(ets: Array<EditText>): Boolean {
-            //Si está mal uno de los textos, texto mal ? marca en rojo : genera un dialog
+
+
             val bools = arrayListOf<Boolean>()
             for (et in ets) {
                 val text = et.text.toString()
@@ -62,5 +66,24 @@ class HelperUtils {
             }
             return null
         }
+    }
+
+    /**
+     * Como usar.
+     * HelperUtils.SharedPreferenceHelper(Context).getVersionCode()
+     */
+    class SharedPreferenceHelper(context: Context) {
+        private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+
+        fun getVersionCode(): Int {
+            return sharedPreferences.getInt(spkVersionCode, 0)
+        }
+
+        fun saveVersionCode(context: Context, versionCode: Int): HelperUtils.SharedPreferenceHelper {
+            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+            sharedPreferences.edit().putInt(spkVersionCode, versionCode).apply()
+            return this
+        }
+
     }
 }
