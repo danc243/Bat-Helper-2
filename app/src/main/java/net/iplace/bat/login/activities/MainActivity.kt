@@ -1,14 +1,13 @@
 package net.iplace.bat.login.activities
 
 
-import android.content.pm.PackageManager
-import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
 import net.iplace.bat.login.R
-import net.iplace.iplacehelper.IplaceHelper
+import net.iplace.iplacehelper.HelperUtils
+import net.iplace.iplacehelper.retrofit.HelperRetrofit
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,20 +16,22 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
-        tv_login.setOnClickListener(View.OnClickListener {
-            startActivity(AppListActivity.newIntent(applicationContext))
+        btn_login.setOnClickListener(View.OnClickListener {
 
-//            IplaceHelper.login({
-//
-//            }, this, )
+            if (HelperUtils.validateEditText(arrayOf(et_login_user, et_login_pass))) {
+                HelperRetrofit.login(this, et_login_user.text.toString(), et_login_pass.text.toString()) {
+                    it?.let {
+                        startActivity(AppListActivity.newIntent(applicationContext, it))
+                    }
+                }
+            } else {
 
+            }
         })
-
     }
 
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
     }
 }

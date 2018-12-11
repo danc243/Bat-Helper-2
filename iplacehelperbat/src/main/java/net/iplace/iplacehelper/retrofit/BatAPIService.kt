@@ -1,4 +1,4 @@
-package net.iplace.iplacehelper.Retrofit
+package net.iplace.iplacehelper.retrofit
 
 import retrofit2.Call
 import retrofit2.Retrofit

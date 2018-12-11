@@ -1,6 +1,6 @@
 package net.iplace.iplacehelper.models
 
-import net.iplace.iplacehelper.IplaceHelper
+import net.iplace.iplacehelper.retrofit.HelperRetrofit
 import org.json.JSONObject
 import java.util.*
 
@@ -23,7 +23,7 @@ class RouteExample(
         }
 
         fun handlerResult(callback: (ArrayList<RouteExample>?) -> Unit, json: String) {
-            if (IplaceHelper.getResult(json) > 0) {
+            if (HelperRetrofit.getResult(json) > 0) {
                 val data = JSONObject(json).getJSONObject("data").getJSONArray("rutas")
                 val array = ArrayList<RouteExample>()
                 for (i in 0..(data.length() - 1)) {
