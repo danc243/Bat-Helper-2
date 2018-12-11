@@ -5,33 +5,56 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.View
+import android.widget.TextView
 import net.iplace.bat.login.R
+import net.iplace.iplacehelper.models.Login
 
 /**
  * Created by ${DANavarro} on 06/12/2018.
  */
 
-class RVAppListAdapter(val mcontext: Context, val listener: RVAppListAdapter.onItemClickListener) : RecyclerView.Adapter<RVAppListAdapter.ViewHolder>() {
+class RVAppListAdapter(val mcontext: Context) : RecyclerView.Adapter<RVAppListAdapter.ViewHolder>() {
+
+    var array = ArrayList<Login.Aplicacion>()
+    var onItemClick: ((Login.Aplicacion) -> Unit)? = null
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(mcontext).inflate(R.layout.rv_app_list_layout, parent, false));
     }
 
     override fun getItemCount(): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return array.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        holder.setData(array[position])
     }
 
-    class ViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
-        fun setData() {
+    fun setElements(it: ArrayList<Login.Aplicacion>) {
+        array = it
+        reloadAll()
+    }
 
+    private fun reloadAll() {
+        notifyDataSetChanged()
+    }
+
+    inner class ViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
+        fun setData(app: Login.Aplicacion) {
+
+            itemView.setOnClickListener {
+                onItemClick?.invoke(array[adapterPosition])
+            }
+
+            itemView.findViewById<TextView>(R.id.tv_rva_applist).let {
+                it.text = app.nombre
+            }
+            //Todo poner imágenes.
         }
     }
 
-    interface onItemClickListener {
+    interface OnItemClickListener {
         fun onClick(o: Any)
     }
 }

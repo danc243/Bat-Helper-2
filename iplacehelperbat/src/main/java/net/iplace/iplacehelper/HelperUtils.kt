@@ -3,6 +3,7 @@ package net.iplace.iplacehelper
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
+import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
 import android.telephony.TelephonyManager
@@ -20,7 +21,6 @@ class HelperUtils {
 
         fun validateEditText(ets: Array<EditText>): Boolean {
             //Si está mal uno de los textos, texto mal ? marca en rojo : genera un dialog
-            var msg = ""
             val bools = arrayListOf<Boolean>()
             for (et in ets) {
                 val text = et.text.toString()
@@ -50,6 +50,12 @@ class HelperUtils {
                     }
                 } else {
                     // Todo versión menor a 26
+                    try {
+                        val imei = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
+                    } catch (e: Exception) {
+                        ErrorDialog.newErrorDialog(context, e.localizedMessage)
+                        return null
+                    }
                 }
             } else {
                 ActivityCompat.requestPermissions(context, arrayOf(android.Manifest.permission.READ_PHONE_STATE), HelperPermissions.READ_PHONE_STATE_PERMISSION)

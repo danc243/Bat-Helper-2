@@ -25,8 +25,6 @@ class HelperRetrofit {
             BatAPIService.create()
         }
 
-//        var disposable: Disposable? = null
-
         fun getResult(json: String): Int {
             val obj = JSONObject(json)
             val res = obj.getString("result")
@@ -51,7 +49,7 @@ class HelperRetrofit {
             val body = HashMap<String, String>()
             body.set("login", user)
             body.set("password", password)
-            body.set("imei", imei)
+            body.set("imei", "123")
             body.set("token", "30000")
             val loginCall = batAPIService.login(body)
             loginCall.enqueue(object : Callback<String> {

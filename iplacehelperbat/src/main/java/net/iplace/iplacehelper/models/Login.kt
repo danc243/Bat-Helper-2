@@ -1,18 +1,24 @@
 package net.iplace.iplacehelper.models
 
+import com.google.gson.Gson
 import org.json.JSONObject
 
 /**
  * Created by ${DANavarro} on 10/12/2018.
  */
-data class Login(
+class Login(
         val nombreUsuario: String,
         val nombreHub: String,
         val nombrePuerta: String,
         val aplicaciones: ArrayList<Aplicacion>
-) {
+) : Base() {
 
     companion object {
+
+        fun jsonToObj(json: String): Login? {
+            return Gson().fromJson(json, Login::class.java)
+        }
+
         @Throws(Exception::class)
         private fun map(obj: JSONObject): Login? {
             val nombreUsuario = obj.getString("nombreUsuario")
@@ -40,7 +46,7 @@ data class Login(
     }
 
 
-    data class Aplicacion(
+    class Aplicacion(
             val id: Int,
             val nombre: String
     ) {

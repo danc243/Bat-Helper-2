@@ -38,7 +38,7 @@
 
     <TextView
         android:lines="2"
-        android:id="@+id/tv_app_list_version_code"
+        android:id="@+id/tv_app_list_location"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/marginElement"
@@ -55,7 +55,7 @@
         app:layout_constraintBottom_toTopOf="@id/tv_app_list_update_catalog"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_app_list_version_code" />
+        app:layout_constraintTop_toBottomOf="@id/tv_app_list_location" />
 
     <TextView
         android:id="@+id/tv_app_list_update_catalog"

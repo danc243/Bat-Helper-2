@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/marginElement"
+    android:padding="@dimen/marginElement">
 
     <ImageView
         android:id="@+id/iv_rva_applist"
@@ -12,11 +13,11 @@
         android:src="@mipmap/ic_launcher" />
 
     <TextView
-        android:layout_marginStart="@dimen/marginElement"
         android:id="@+id/tv_rva_applist"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Algo"
+        android:layout_marginStart="@dimen/marginElement"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="@id/iv_rva_applist"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/iv_rva_applist"
