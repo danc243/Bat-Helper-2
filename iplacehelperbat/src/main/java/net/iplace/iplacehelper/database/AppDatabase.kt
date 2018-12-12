@@ -3,11 +3,9 @@ package net.iplace.iplacehelper.database
 import android.arch.persistence.room.Database
 import android.arch.persistence.room.RoomDatabase
 import net.iplace.iplacehelper.HelperUtils
-import net.iplace.iplacehelper.database.operador.Operador
-import net.iplace.iplacehelper.database.operador.OperadorDao
-import net.iplace.iplacehelper.database.transportista.Transportista
-import net.iplace.iplacehelper.database.unidad.Unidad
-import net.iplace.iplacehelper.database.unidad.UnidadDao
+import net.iplace.iplacehelper.models.Operador
+import net.iplace.iplacehelper.models.Transportista
+import net.iplace.iplacehelper.models.Unidad
 
 /**
  * Created by ${DANavarro} on 11/12/2018.
@@ -29,6 +27,10 @@ abstract class AppDatabase : RoomDatabase() {
 
     companion object {
         const val db_name = "IplaceHelperDatabase"
+
+
+
+
     }
 }
 

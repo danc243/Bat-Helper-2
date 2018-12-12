@@ -24,7 +24,6 @@ class HelperUtils {
 
         fun validateEditText(ets: Array<EditText>): Boolean {
 
-
             val bools = arrayListOf<Boolean>()
             for (et in ets) {
                 val text = et.text.toString()
@@ -45,7 +44,6 @@ class HelperUtils {
                     return try {
                         val tm = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
                         tm.getImei(0)?.let {
-                            Log.d("IMEI", it)
                             return it
                         }
                     } catch (ex: Exception) {

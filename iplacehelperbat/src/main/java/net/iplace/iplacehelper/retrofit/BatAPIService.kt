@@ -21,6 +21,12 @@ interface BatAPIService {
 
     fun login(@Body body: HashMap<String, String>): Call<String>
 
+    @Headers(
+            "Content-Type:application/json"
+    )
+    @POST("wsaccess/interfaz.svc/catalogos")
+    fun getCatalogos(@Body body: HashMap<String, String>): Call<String>
+
 
     companion object {
         fun create(): BatAPIService {

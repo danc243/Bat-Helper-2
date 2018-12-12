@@ -10,6 +10,8 @@ import kotlinx.android.synthetic.main.activity_app_list.*
 import net.iplace.bat.login.R
 import net.iplace.bat.login.adapters.RVAppListAdapter
 import net.iplace.iplacehelper.models.Login
+import net.iplace.iplacehelper.retrofit.HelperRetrofit
+import org.jetbrains.anko.toast
 
 
 class AppListActivity : AppCompatActivity() {
@@ -21,8 +23,10 @@ class AppListActivity : AppCompatActivity() {
 
         try {
             intent.getStringExtra(PUT_EXTRA_LOGIN_APPS)?.let {
-                Login.jsonToObj(it)?.let {
-                    init(it)
+                Login.jsonToObj(it)?.let { login ->
+                    init(login)
+                    getCatalog()
+
                 }
             }
         } catch (e: Exception) {
@@ -30,6 +34,16 @@ class AppListActivity : AppCompatActivity() {
             finish()
         }
     }
+
+
+    private fun getCatalog() {
+        HelperRetrofit.getCatalogos(this) {
+            it?.let { catalogos ->
+
+            }
+        }
+    }
+
 
     private fun init(login: Login) {
         setTextViews(login)
@@ -55,10 +69,12 @@ class AppListActivity : AppCompatActivity() {
     companion object {
 
         const val PUT_EXTRA_LOGIN_APPS = "PUT_EXTRA_LOGIN_APPS"
+        const val PUT_EXTRA_LOGIN_APPS_PASSWORD = "PUT_EXTRA_LOGIN_APPS_PASSWORD"
 
-        fun newIntent(context: Context, login: Login): Intent {
-            //Todo: Modificar esto cuando tengamos que enviar datos reales.
+
+        fun newIntent(context: Context, login: Login, password: String): Intent {
             val intent = Intent(context, AppListActivity::class.java)
+            intent.putExtra(PUT_EXTRA_LOGIN_APPS_PASSWORD, password)
             intent.putExtra(PUT_EXTRA_LOGIN_APPS, login.toJson())
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
             return intent
