@@ -90,7 +90,6 @@ class HelperRetrofit {
 
 
         fun getCatalogos(context: AppCompatActivity, callback: (Catalogos?) -> Unit) {
-
             val user = this@Companion.user ?: return
             val password = this@Companion.pass ?: return
             val imei = this@Companion.imei ?: return

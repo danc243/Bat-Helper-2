@@ -5,7 +5,6 @@ import android.content.Context
 import android.os.Build
 import android.preference.PreferenceManager
 import android.provider.Settings
-import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
 import android.telephony.TelephonyManager
 import android.util.Log
@@ -52,15 +51,14 @@ class HelperUtils {
                     }
                 } else {
                     // Todo versión menor a 26
-                    try {
+                    return try {
                         val imei = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
+                        imei
                     } catch (e: Exception) {
                         ErrorDialog.newErrorDialog(context, e.localizedMessage)
-                        return null
+                        null
                     }
                 }
-            } else {
-                ActivityCompat.requestPermissions(context, arrayOf(android.Manifest.permission.READ_PHONE_STATE), HelperPermissions.READ_PHONE_STATE_PERMISSION)
             }
             return null
         }
