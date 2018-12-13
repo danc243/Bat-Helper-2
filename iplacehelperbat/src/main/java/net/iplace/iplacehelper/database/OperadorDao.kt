@@ -15,5 +15,5 @@ interface OperadorDao {
     fun getAll(): List<Operador>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg operadores: Operador)
+    fun insertAll(operadores: List<Operador>)
 }

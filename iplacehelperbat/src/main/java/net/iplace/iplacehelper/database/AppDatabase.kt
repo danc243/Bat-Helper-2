@@ -24,11 +24,11 @@ import net.iplace.iplacehelper.models.Unidad
 abstract class AppDatabase : RoomDatabase() {
     abstract fun unidadDao(): UnidadDao
     abstract fun operadorDao(): OperadorDao
+    abstract fun transportistaDao(): TransportistaDao
+
 
     companion object {
         const val db_name = "IplaceHelperDatabase"
-
-
 
 
     }

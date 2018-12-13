@@ -1,5 +1,6 @@
 package net.iplace.bat.login.activities
 
+import android.arch.persistence.room.Room
 import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
@@ -9,9 +10,13 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_app_list.*
 import net.iplace.bat.login.R
 import net.iplace.bat.login.adapters.RVAppListAdapter
+import net.iplace.iplacehelper.HelperUtils
+import net.iplace.iplacehelper.database.AppDatabase
+import net.iplace.iplacehelper.database.Catalogos
+import net.iplace.iplacehelper.dialogs.ProgressDialog
 import net.iplace.iplacehelper.models.Login
 import net.iplace.iplacehelper.retrofit.HelperRetrofit
-import org.jetbrains.anko.toast
+import org.jetbrains.anko.doAsync
 
 
 class AppListActivity : AppCompatActivity() {
@@ -39,11 +44,12 @@ class AppListActivity : AppCompatActivity() {
     private fun getCatalog() {
         HelperRetrofit.getCatalogos(this) {
             it?.let { catalogos ->
+                //Guardar catalogos a la base de datos usando room c:
+                saveCatalogs(catalogos)
 
             }
         }
     }
-
 
     private fun init(login: Login) {
         setTextViews(login)
@@ -65,12 +71,28 @@ class AppListActivity : AppCompatActivity() {
         rv_app_list.adapter = rv
     }
 
+    private fun saveCatalogs(catalogos: Catalogos) {
+        val db = Room.databaseBuilder(this, AppDatabase::class.java, AppDatabase.db_name).build()
+        val dialog = ProgressDialog.newProgressDialog(this@AppListActivity, "Guardando catálogos")
+        dialog.show()
+
+        doAsync {
+
+            db.transportistaDao().insertAll(catalogos.transportistas)
+            db.operadorDao().insertAll(catalogos.operadores)
+            db.unidadDao().insertAll(catalogos.unidades)
+            HelperUtils.SharedPreferenceHelper(this@AppListActivity).versionCode = catalogos.version
+
+            dialog.dismiss()
+        }
+
+
+    }
 
     companion object {
 
         const val PUT_EXTRA_LOGIN_APPS = "PUT_EXTRA_LOGIN_APPS"
         const val PUT_EXTRA_LOGIN_APPS_PASSWORD = "PUT_EXTRA_LOGIN_APPS_PASSWORD"
-
 
         fun newIntent(context: Context, login: Login, password: String): Intent {
             val intent = Intent(context, AppListActivity::class.java)

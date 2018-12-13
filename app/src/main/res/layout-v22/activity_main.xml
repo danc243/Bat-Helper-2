@@ -4,14 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ic_login_background"
+    android:background="@color/colorActivityBackground"
     tools:context="net.iplace.bat.login.activities.MainActivity">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="50dp"
-        android:background="@drawable/ic_login_circle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,7 +21,6 @@
             android:layout_width="467dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fab_margin"
-            android:background="@drawable/ic_login_box"
             android:padding="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -46,8 +44,7 @@
                     android:id="@+id/et_login_user"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:lines="1"
-                    android:textColor="@android:color/white" />
+                    android:lines="1" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -69,8 +66,7 @@
                     android:hint="@string/contrase_a"
                     android:inputType="textPassword"
                     android:lines="1"
-                    android:nextFocusForward="@id/btn_login"
-                    android:textColor="@android:color/white" />
+                    android:nextFocusForward="@id/btn_login" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.v7.widget.AppCompatButton

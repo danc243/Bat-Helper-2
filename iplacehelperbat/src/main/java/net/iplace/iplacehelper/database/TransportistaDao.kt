@@ -16,6 +16,6 @@ interface TransportistaDao {
     fun getAll(): List<Transportista>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg tranportistas: Transportista)
+    fun insertAll(tranportistas: List<Transportista>)
 
 }

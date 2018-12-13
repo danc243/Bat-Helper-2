@@ -93,7 +93,8 @@ class HelperRetrofit {
             val user = this@Companion.user ?: return
             val password = this@Companion.pass ?: return
             val imei = this@Companion.imei ?: return
-            val vscode = HelperUtils.SharedPreferenceHelper(context).getVersionCode()
+
+            val vscode = HelperUtils.SharedPreferenceHelper(context).versionCode
 
             val body = HashMap<String, String>()
             body.set("login", user)
@@ -106,6 +107,30 @@ class HelperRetrofit {
             catalogCall.enqueue
              */
 
+            catalogCall.enqueue(object : Callback<String> {
+                override fun onFailure(call: Call<String>?, t: Throwable?) {
+                    t?.let {
+                        ErrorDialog.newErrorDialog(context, t.localizedMessage)
+                    }
+                }
+
+                override fun onResponse(call: Call<String>?, response: Response<String>?) {
+                    response?.let { response ->
+                        if (response.isSuccessful) {
+                            response.body()?.let { body ->
+                                if (getResult(body) > 0) {
+                                    callback(Catalogos.handleData(body))
+                                } else {
+                                    ErrorDialog.newErrorDialog(context, getMessage(body))
+                                }
+                            }
+                        }
+                    }
+
+                }
+            })
+
+/*
             val s = "{\n" +
                     "\t'result': '1',\n" +
                     "\t'message': 'Operación exitosa',\n" +
@@ -138,8 +163,7 @@ class HelperRetrofit {
                     "\t\t]\n" +
                     "\t}\n" +
                     "}"
-
-            callback(Catalogos.handleData(s))
+*/
 
         }
 

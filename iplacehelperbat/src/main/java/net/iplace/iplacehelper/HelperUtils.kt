@@ -2,7 +2,9 @@ package net.iplace.iplacehelper
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Build
+import android.preference.Preference
 import android.preference.PreferenceManager
 import android.provider.Settings
 import android.support.v7.app.AppCompatActivity
@@ -12,6 +14,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import net.iplace.iplacehelper.dialogs.ErrorDialog
 import net.iplace.iplacehelper.retrofit.HelperRetrofit
+import java.lang.reflect.Array.get
 
 /**
  * Created by ${DANavarro} on 10/12/2018.
@@ -66,20 +69,23 @@ class HelperUtils {
 
     /**
      * Como usar.
-     * HelperUtils.SharedPreferenceHelper(Context).getVersionCode()
+     * HelperUtils.SharedPreferenceHelper(Context).getVersionCode2()
      */
-    class SharedPreferenceHelper(context: Context) {
-        private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+    class SharedPreferenceHelper(val context: Context) {
+        private val sharedPreferences = context.getSharedPreferences(sharedPreferencesKey, Context.MODE_PRIVATE)
+        var versionCode: Int
+            get() = sharedPreferences.getInt(spkVersionCode, 0)
+            set(value) = sharedPreferences.edit().putInt(spkVersionCode, value).apply()
 
-        fun getVersionCode(): Int {
-            return sharedPreferences.getInt(spkVersionCode, 0)
-        }
-
-        fun saveVersionCode(context: Context, versionCode: Int): HelperUtils.SharedPreferenceHelper {
-            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-            sharedPreferences.edit().putInt(spkVersionCode, versionCode).apply()
-            return this
-        }
+//        fun getVersionCode2(): Int {
+//            return sharedPreferences.getInt(spkVersionCode, 0)
+//        }
+//
+//        fun saveVersionCode(versionCode: Int): HelperUtils.SharedPreferenceHelper {
+//            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+//            sharedPreferences.edit().putInt(spkVersionCode, versionCode).apply()
+//            return this
+//        }
 
     }
 }

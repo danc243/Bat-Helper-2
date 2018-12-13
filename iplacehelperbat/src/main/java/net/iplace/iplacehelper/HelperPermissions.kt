@@ -44,19 +44,12 @@ class HelperPermissions {
 
             } else {
                 val permission = PermissionChecker.checkSelfPermission(context, android.Manifest.permission.READ_PHONE_STATE)
-
                 if (permission == PackageManager.PERMISSION_GRANTED) {
                     return true
                 } else {
                     ErrorDialog.newErrorDialog(context, "Versión de Android menor a API 23 (Android 6.0 Marshmallow), dar permisos manualmente desde configuración")
                 }
-
-
             }
-
-
-
-
             return false
         }
 

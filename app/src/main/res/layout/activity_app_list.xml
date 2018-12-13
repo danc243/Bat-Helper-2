@@ -18,11 +18,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:lines="2"
         android:id="@+id/tv_app_list_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/marginElement"
+        android:lines="2"
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_name_placeholder" />
@@ -37,11 +37,11 @@
         app:layout_constraintTop_toBottomOf="@id/tv_app_list_name" />
 
     <TextView
-        android:lines="2"
         android:id="@+id/tv_app_list_location"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/marginElement"
+        android:lines="2"
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_ubicacion_placeholder"
@@ -57,12 +57,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_app_list_location" />
 
-    <TextView
+    <android.support.v7.widget.AppCompatButton
         android:id="@+id/tv_app_list_update_catalog"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:background="@color/bat_amarillo"
         android:text="@string/actualizar_cat_logo"
-        android:textColor="@color/bat_amarillo"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
