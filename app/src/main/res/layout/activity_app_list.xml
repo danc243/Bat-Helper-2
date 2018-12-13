@@ -52,13 +52,13 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="@dimen/marginElement"
-        app:layout_constraintBottom_toTopOf="@id/tv_app_list_update_catalog"
+        app:layout_constraintBottom_toTopOf="@id/btn_app_list_update_catalog"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_app_list_location" />
 
     <android.support.v7.widget.AppCompatButton
-        android:id="@+id/tv_app_list_update_catalog"
+        android:id="@+id/btn_app_list_update_catalog"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/bat_amarillo"

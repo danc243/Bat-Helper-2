@@ -2,10 +2,7 @@ package net.iplace.iplacehelper
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.SharedPreferences
 import android.os.Build
-import android.preference.Preference
-import android.preference.PreferenceManager
 import android.provider.Settings
 import android.support.v7.app.AppCompatActivity
 import android.telephony.TelephonyManager
@@ -13,16 +10,53 @@ import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import net.iplace.iplacehelper.dialogs.ErrorDialog
+import net.iplace.iplacehelper.models.Login
 import net.iplace.iplacehelper.retrofit.HelperRetrofit
-import java.lang.reflect.Array.get
 
 /**
  * Created by ${DANavarro} on 10/12/2018.
  */
 class HelperUtils {
     companion object {
+
+        const val SEND_USER_INTENT = "net.iplace.iplacehelper.user"
+        const val SEND_PASSWORD_INTENT = "net.iplace.iplacehelper.pass"
+        const val SEND_IMEI_INTENT = "net.iplace.iplacehelper.imei"
+        const val SEND_TOKEN_INTENT = "net.iplace.iplacehelper.token"
+
+
+        const val LoginApp = "net.iplace.bat.login"
+        const val LoginAppID = 1900 // No tiene id
+
+
+        //todo nombres no reales.
+
+        const val ControlAccesoApp = "net.iplace.bat.controlacceso"
+        const val ControlAccesoAppID = 1910
+
+        const val InspeccionApp = "net.iplace.bat_ct_pad"
+        const val InspeccionID = 1920
+
+
+        const val InspeccionPatrullasApp = "net.iplace.bat.inspeccionpatrullas"
+        const val InspeccionPatrullasID = 1930
+
+
         private const val sharedPreferencesKey = "iplaceHelperSPK"
         private const val spkVersionCode = "database_version_code_key"
+
+
+
+
+        fun handleGoToApp(app: Login.Aplicacion): String {
+            return when (app.id) {
+                ControlAccesoAppID -> ControlAccesoApp
+                InspeccionID -> InspeccionApp
+                InspeccionPatrullasID -> InspeccionPatrullasApp
+                else -> ""
+            }
+        }
+
 
         fun validateEditText(ets: Array<EditText>): Boolean {
 
@@ -67,25 +101,10 @@ class HelperUtils {
         }
     }
 
-    /**
-     * Como usar.
-     * HelperUtils.SharedPreferenceHelper(Context).getVersionCode2()
-     */
     class SharedPreferenceHelper(val context: Context) {
         private val sharedPreferences = context.getSharedPreferences(sharedPreferencesKey, Context.MODE_PRIVATE)
         var versionCode: Int
             get() = sharedPreferences.getInt(spkVersionCode, 0)
             set(value) = sharedPreferences.edit().putInt(spkVersionCode, value).apply()
-
-//        fun getVersionCode2(): Int {
-//            return sharedPreferences.getInt(spkVersionCode, 0)
-//        }
-//
-//        fun saveVersionCode(versionCode: Int): HelperUtils.SharedPreferenceHelper {
-//            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-//            sharedPreferences.edit().putInt(spkVersionCode, versionCode).apply()
-//            return this
-//        }
-
     }
 }

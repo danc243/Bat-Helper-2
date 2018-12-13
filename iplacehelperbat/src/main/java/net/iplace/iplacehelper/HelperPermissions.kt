@@ -1,12 +1,8 @@
 package net.iplace.iplacehelper
 
-import android.Manifest
-import android.app.Activity
 import android.app.AlertDialog
-import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
-import android.support.v4.app.ActivityCompat
 import android.support.v4.content.PermissionChecker
 import android.support.v7.app.AppCompatActivity
 import net.iplace.iplacehelper.dialogs.ErrorDialog

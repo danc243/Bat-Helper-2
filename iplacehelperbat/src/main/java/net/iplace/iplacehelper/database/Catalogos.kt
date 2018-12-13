@@ -34,9 +34,6 @@ class Catalogos(
                     }
                 }
             }
-            accessData(json)?.let { data ->
-                return Gson().fromJson(data.toString(), Catalogos::class.java)
-            }
             return null
         }
     }

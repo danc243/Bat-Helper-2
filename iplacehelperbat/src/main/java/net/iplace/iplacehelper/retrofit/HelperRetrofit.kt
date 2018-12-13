@@ -19,6 +19,7 @@ import retrofit2.Response
 class HelperRetrofit {
 
     companion object {
+
         val error = "Error"
 
         var user: String? = null
@@ -26,7 +27,7 @@ class HelperRetrofit {
         var imei: String? = null
         var token: String? = null
 
-        val batAPIService by lazy {
+        private val batAPIService by lazy {
             BatAPIService.create()
         }
 
@@ -66,7 +67,6 @@ class HelperRetrofit {
                         ErrorDialog.newErrorDialog(context, it.localizedMessage)
                     }
                 }
-
                 override fun onResponse(call: Call<String>?, response: Response<String>?) {
                     response?.let {
                         progressDialog.dismiss()
@@ -88,7 +88,6 @@ class HelperRetrofit {
             })
         }
 
-
         fun getCatalogos(context: AppCompatActivity, callback: (Catalogos?) -> Unit) {
             val user = this@Companion.user ?: return
             val password = this@Companion.pass ?: return
@@ -103,10 +102,6 @@ class HelperRetrofit {
             body.set("version", vscode.toString())
 
             val catalogCall = batAPIService.getCatalogos(body)
-            /*
-            catalogCall.enqueue
-             */
-
             catalogCall.enqueue(object : Callback<String> {
                 override fun onFailure(call: Call<String>?, t: Throwable?) {
                     t?.let {
@@ -129,42 +124,6 @@ class HelperRetrofit {
 
                 }
             })
-
-/*
-            val s = "{\n" +
-                    "\t'result': '1',\n" +
-                    "\t'message': 'Operación exitosa',\n" +
-                    "\t'data': {\n" +
-                    "\t\t'version': '1',\n" +
-                    "\t\t'transportista':\n" +
-                    "\t\t[{\n" +
-                    "\t\t\t\t'id': '3',\n" +
-                    "\t\t\t\t'nombre': 'Ryder'\n" +
-                    "\t\t\t}\n" +
-                    "\t\t],\n" +
-                    "\t\t'operador': [{\n" +
-                    "\t\t\t\t'id': '56456',\n" +
-                    "\t\t\t\t'idTransportista': '564564',\n" +
-                    "\t\t\t\t'nombre': 'djjskandjksa',\n" +
-                    "\t\t\t\t'celular': 'djkdnsajkdnas',\n" +
-                    "\t\t\t\t'nextel': 'djasndjksa',\n" +
-                    "\t\t\t\t'licencia': 'djasndjkasnjd'\n" +
-                    "\t\t\t}\n" +
-                    "\t\t],\n" +
-                    "\t\t'unidad': [{\n" +
-                    "\t\t\t\t'id': '8888',\n" +
-                    "\t\t\t\t'idTransportista': '3',\n" +
-                    "\t\t\t\t'clave': 'dsadsad',\n" +
-                    "\t\t\t\t'marca': 'aaaa',\n" +
-                    "\t\t\t\t'modelo': 'qqqqq',\n" +
-                    "\t\t\t\t'placas': 'qqqqqqqq',\n" +
-                    "\t\t\t\t'color': 'rojito ayy'\n" +
-                    "\t\t\t}\n" +
-                    "\t\t]\n" +
-                    "\t}\n" +
-                    "}"
-*/
-
         }
 
     }
