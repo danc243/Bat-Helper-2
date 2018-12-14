@@ -27,24 +27,5 @@ class InfoDialog {
             alertDialog.setCanceledOnTouchOutside(false)
             return alertDialog
         }
-
-
-        fun infoDialog(context: AppCompatActivity, message: String, title: String = "Error", function: (Login?) -> Unit): AlertDialog {
-            val builder = AlertDialog.Builder(context)
-            builder.setTitle(title)
-            builder.setMessage(message)
-            builder.setPositiveButton("OK") { _, _ ->
-                function
-            }
-            builder.setNegativeButton("Cancelar") { dialog, wich ->
-                dialog.dismiss()
-            }
-            val alertDialog = builder.create()
-            alertDialog.setCancelable(false)
-            alertDialog.setCanceledOnTouchOutside(false)
-            return alertDialog
-        }
-
-
     }
 }

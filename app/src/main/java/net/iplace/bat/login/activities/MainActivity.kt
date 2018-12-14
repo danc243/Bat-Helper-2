@@ -10,10 +10,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import net.iplace.bat.login.R
 import net.iplace.iplacehelper.HelperPermissions
 import net.iplace.iplacehelper.HelperUtils
-import net.iplace.iplacehelper.database.HelperDatabase
-import net.iplace.iplacehelper.models.Login
 import net.iplace.iplacehelper.retrofit.HelperRetrofit
-import org.jetbrains.anko.toast
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,7 +24,7 @@ class MainActivity : AppCompatActivity() {
             if (HelperUtils.validateEditText(arrayOf(et_login_user, et_login_pass))) {
                 HelperRetrofit.login(this, et_login_user.text.toString(), et_login_pass.text.toString()) {
                     it?.let { login ->
-                        startActivity(AppListActivity.newIntent(applicationContext, login, et_login_pass.text.toString()))
+                        startActivity(AppListActivity.newIntent(applicationContext, login))
                         finish()
                     }
                 }
@@ -79,7 +76,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
-        super.onRestoreInstanceState(savedInstanceState)
+//        super.onRestoreInstanceState(savedInstanceState)
         savedInstanceState?.let {
             et_login_user.setText(it.getString("login", ""))
             et_login_pass.setText(it.getString("pass", ""))

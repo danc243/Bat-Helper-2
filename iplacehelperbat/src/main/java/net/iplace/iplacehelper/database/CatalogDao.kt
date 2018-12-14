@@ -17,4 +17,8 @@ interface CatalogDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(catalogos: Catalogos)
+
+    @Query("DELETE FROM ${Catalogos.table_name}")
+    fun deleteAll()
+
 }

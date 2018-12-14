@@ -5,10 +5,9 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import net.iplace.iplacehelper.HelperUtils
 import net.iplace.iplacehelper.database.HelperDatabase
-//import net.iplace.iplacehelper.database.AppDatabase
-import net.iplace.iplacehelper.models.Catalogos
 import net.iplace.iplacehelper.dialogs.InfoDialog
 import net.iplace.iplacehelper.dialogs.ProgressDialog
+import net.iplace.iplacehelper.models.Catalogos
 import net.iplace.iplacehelper.models.Login
 import org.json.JSONObject
 import retrofit2.Call
@@ -100,14 +99,16 @@ class HelperRetrofit {
         }
 
 
-        fun localLogin(context: AppCompatActivity, username: String, password: String, callback: (Login?) -> Unit) {
+        private fun localLogin(context: AppCompatActivity, username: String, password: String, callback: (Login?) -> Unit) {
             HelperDatabase(context).getUsers { users ->
                 for (user in users) {
                     if (user.username != null && user.password != null) {
                         if (user.username == username && user.password == password) {
-
+                            this@Companion.user = user.username
+                            this@Companion.imei = HelperUtils.getIMEI(context)
+                            this@Companion.pass = user.password
+                            this@Companion.token = "0000"
                             context.runOnUiThread {
-
                                 val builder = AlertDialog.Builder(context)
                                 builder.setTitle("Sin internet")
                                 builder.setMessage("Accediendo sin conexión, puede que los catálogos estén desactualizados.")
@@ -121,10 +122,8 @@ class HelperRetrofit {
                                 alertDialog.setCancelable(false)
                                 alertDialog.setCanceledOnTouchOutside(false)
                                 alertDialog.show()
-
-
                             }
-                            break
+                            return@getUsers
                         }
                     }
                 }
@@ -134,26 +133,49 @@ class HelperRetrofit {
             }
         }
 
+        /**
+         * @param callback
+         * Si no es nulo = Actualizaron catálogos
+         * Si es nulo = Los catálogos YA estaban actualizados (version es igual a la última)
+         * En ambos el usuario procede.
+         * Si nunca llega al callback, es porque tiene mal las credenciales (user, pass, imei)
+         */
+        fun getCatalogos(context: AppCompatActivity, progressDialog: AlertDialog, callback: (Catalogos?) -> Unit) {
 
-        fun getCatalogos(context: AppCompatActivity, callback: (Catalogos?) -> Unit) {
             val user = this@Companion.user ?: return
             val password = this@Companion.pass ?: return
             val imei = this@Companion.imei ?: return
-
             val vscode = HelperUtils.SharedPreferenceHelper(context).versionCode
+
 
             val body = HashMap<String, String>()
             body.set("login", user)
             body.set("password", password)
             body.set("imei", imei)
-            //todo cambiar vscode
-            body.set("version", "0")
+            body.set("version", vscode.toString())
 
             val catalogCall = batAPIService.getCatalogos(body)
             catalogCall.enqueue(object : Callback<String> {
                 override fun onFailure(call: Call<String>?, t: Throwable?) {
                     t?.let {
-                        InfoDialog.newInfoDialog(context, t.localizedMessage)
+                        getLocalCatalog(context) { catalogos ->
+                            progressDialog.dismiss()
+                            val a = AlertDialog.Builder(context)
+                                    .setTitle("Alerta")
+                                    .setMessage("Puede que los catálogos estén desactualizado")
+                                    .setPositiveButton("OK") { dialog, _ ->
+                                        dialog.dismiss()
+                                        callback(catalogos)
+                                    }
+                                    .setNegativeButton("Cancelar") { dialog, which ->
+                                        dialog.dismiss()
+                                        context.finish()
+                                    }
+                            val dialog = a.create()
+                            dialog.setCancelable(false)
+                            dialog.setCanceledOnTouchOutside(false)
+                            dialog.show()
+                        }
                     }
                 }
 
@@ -161,10 +183,20 @@ class HelperRetrofit {
                     response?.let { response ->
                         if (response.isSuccessful) {
                             response.body()?.let { body ->
-                                if (getResult(body) > 0) {
-                                    callback(Catalogos.handleData(body))
-                                } else {
-                                    InfoDialog.newInfoDialog(context, getMessage(body))
+                                val res = getResult(body)
+                                when {
+                                    res == Catalogos.CATALOG_NOT_UPDATED -> {
+                                        HelperDatabase(context).deleteAllCatalog {
+                                            callback(Catalogos.handleData(body))
+                                        }
+                                    }
+                                    res == Catalogos.CATALOG_UPDATED -> {
+//                                        InfoDialog.newInfoDialog(context, getMessage(body))
+                                        callback(null)
+                                    }
+                                    res < 0 -> {
+
+                                    }
                                 }
                             }
                         }
@@ -172,6 +204,13 @@ class HelperRetrofit {
 
                 }
             })
+        }
+
+
+        private fun getLocalCatalog(context: AppCompatActivity, callback: (Catalogos?) -> Unit) {
+            HelperDatabase(context).getCatalogs { catalogos ->
+                callback(catalogos)
+            }
         }
 
 

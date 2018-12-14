@@ -9,14 +9,16 @@ import net.iplace.bat.login.R
 import net.iplace.bat.login.adapters.RVAppListAdapter
 import net.iplace.iplacehelper.BaseActivity
 import net.iplace.iplacehelper.HelperUtils
+import net.iplace.iplacehelper.database.HelperDatabase
 import net.iplace.iplacehelper.dialogs.InfoDialog
+import net.iplace.iplacehelper.dialogs.ProgressDialog
 import net.iplace.iplacehelper.models.Catalogos
 import net.iplace.iplacehelper.models.Login
 import net.iplace.iplacehelper.retrofit.HelperRetrofit
-import org.jetbrains.anko.toast
 
 
 class AppListActivity : BaseActivity(MainActivity::class.java) {
+
     private lateinit var catalogosGlobal: Catalogos
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,12 +40,29 @@ class AppListActivity : BaseActivity(MainActivity::class.java) {
 
 
     private fun getCatalog() {
-        HelperRetrofit.getCatalogos(this) {
+        val progressDialog = ProgressDialog.newProgressDialog(this)
+        progressDialog.show()
+        HelperRetrofit.getCatalogos(this, progressDialog) {
             it.let { catalogos ->
                 if (catalogos != null) {
+                    HelperUtils.SharedPreferenceHelper(this).versionCode = catalogos.version
+                    HelperDatabase(this).saveCatalog(catalogos) {
+                        catalogosGlobal = catalogos
+                        progressDialog.dismiss()
+                    }
                 } else {
-                    toast("El catálogo está actualizado")
+                    // Catálogo Actualizado, conseguirlo de la base de detos.
+                    HelperDatabase(this).getCatalogs {
+                        it.let { catalogos ->
+                            if (catalogos != null) {
+                                catalogosGlobal = catalogos
+                                progressDialog.dismiss()
+                            } else {
+                                progressDialog.dismiss()
+                            }
+                        }
 
+                    }
                 }
             }
         }
@@ -91,20 +110,11 @@ class AppListActivity : BaseActivity(MainActivity::class.java) {
         startActivity(intent)
     }
 
-
-    //region Room
-
-    //endregion
-
-
     companion object {
 
         const val PUT_EXTRA_LOGIN_APPS = "PUT_EXTRA_LOGIN_APPS"
-        const val PUT_EXTRA_LOGIN_APPS_PASSWORD = "PUT_EXTRA_LOGIN_APPS_PASSWORD"
-
-        fun newIntent(context: Context, login: Login, password: String): Intent {
+        fun newIntent(context: Context, login: Login): Intent {
             val intent = Intent(context, AppListActivity::class.java)
-            intent.putExtra(PUT_EXTRA_LOGIN_APPS_PASSWORD, password)
             intent.putExtra(PUT_EXTRA_LOGIN_APPS, login.toJson())
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
             return intent

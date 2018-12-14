@@ -1,6 +1,7 @@
 package net.iplace.iplacehelper.database
 
 import android.support.v7.app.AppCompatActivity
+import net.iplace.iplacehelper.dialogs.ProgressDialog
 import net.iplace.iplacehelper.models.Catalogos
 import net.iplace.iplacehelper.models.Login
 import org.jetbrains.anko.doAsync
@@ -12,15 +13,44 @@ import org.jetbrains.anko.toast
 class HelperDatabase(private val context: AppCompatActivity) {
     private val db = AppDatabase.newInstance(context)
 
-    fun saveCatalog(catalogos: Catalogos) {
+    fun deleteAllCatalog(onFinished: () -> Unit) {
+        context.doAsync {
+            db.catalogDao().deleteAll()
+            db.close()
+            onFinished()
+        }
+    }
+
+
+    fun saveCatalog(catalogos: Catalogos, onFinished: () -> Unit) {
 
         context.doAsync {
-            db.catalogDao().insert(catalogos)
-            db.close()
-            context.toast("Catálogos guardados!")
+            context.runOnUiThread {
+                db.catalogDao().insert(catalogos)
+                db.close()
+                onFinished()
+            }
         }
 
     }
+
+
+    fun getCatalogs(callback: (Catalogos?) -> Unit) {
+        //Sólo puede haber una columna de catálogos.
+
+        context.doAsync {
+            val catalogos = db.catalogDao().getAll()
+            if (catalogos.isEmpty()) {
+                callback(null)
+                return@doAsync
+            }
+            if (catalogos.size == 1) {
+                callback(catalogos.first())
+                return@doAsync
+            }
+        }
+    }
+
 
     fun saveUser(login: Login) {
         context.doAsync {

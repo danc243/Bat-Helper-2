@@ -34,21 +34,18 @@ class Catalogos(
 
         const val CATALOG_NOT_UPDATED = 1
         const val CATALOG_UPDATED = 2
+
+
         fun handleData(json: String): Catalogos? {
             HelperRetrofit.getResult(json).let { result ->
-                when (result) {
-                    CATALOG_NOT_UPDATED -> {
-                        accessData(json)?.let { data ->
-                            return Gson().fromJson(data.toString(), Catalogos::class.java)
-                        }
-                    }
-                    else -> {
-                        return null
-                    }
+                accessData(json)?.let { data ->
+                    return Gson().fromJson(data.toString(), Catalogos::class.java)
                 }
             }
             return null
         }
+
+
     }
 
 
