@@ -12,10 +12,6 @@ import retrofit2.http.POST
  */
 interface BatAPIService {
 
-
-//    @GET("wsaccess/interfaz.svc/ruta")
-//    fun getRoutes(@Header("Authorization") header: String): Call<String>
-
     @Headers(
             "Content-Type:application/json"
     )

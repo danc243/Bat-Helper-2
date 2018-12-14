@@ -40,6 +40,9 @@ dependencies {
     /*Room Persistence*/
     api 'android.arch.persistence.room:runtime:1.1.1'
     kapt 'android.arch.persistence.room:compiler:1.1.1'
+
+    /*Async Taks Kotlin*/
+    implementation "org.jetbrains.anko:anko-commons:0.10.4"
 }
 repositories {
     mavenCentral()

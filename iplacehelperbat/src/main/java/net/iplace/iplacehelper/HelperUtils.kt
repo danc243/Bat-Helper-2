@@ -9,7 +9,7 @@ import android.telephony.TelephonyManager
 import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
-import net.iplace.iplacehelper.dialogs.ErrorDialog
+import net.iplace.iplacehelper.dialogs.InfoDialog
 import net.iplace.iplacehelper.models.Login
 import net.iplace.iplacehelper.retrofit.HelperRetrofit
 
@@ -92,7 +92,7 @@ class HelperUtils {
                         val imei = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
                         imei
                     } catch (e: Exception) {
-                        ErrorDialog.newErrorDialog(context, e.localizedMessage)
+                        InfoDialog.newInfoDialog(context, e.localizedMessage)
                         null
                     }
                 }

@@ -1,10 +1,13 @@
 package net.iplace.iplacehelper.retrofit
 
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import net.iplace.iplacehelper.HelperUtils
-import net.iplace.iplacehelper.database.Catalogos
-import net.iplace.iplacehelper.dialogs.ErrorDialog
+import net.iplace.iplacehelper.database.HelperDatabase
+//import net.iplace.iplacehelper.database.AppDatabase
+import net.iplace.iplacehelper.models.Catalogos
+import net.iplace.iplacehelper.dialogs.InfoDialog
 import net.iplace.iplacehelper.dialogs.ProgressDialog
 import net.iplace.iplacehelper.models.Login
 import org.json.JSONObject
@@ -46,7 +49,7 @@ class HelperRetrofit {
         fun login(context: AppCompatActivity, user: String, password: String, callback: (Login?) -> Unit) {
             val imei = HelperUtils.getIMEI(context)
             if (imei == null) {
-                ErrorDialog.newErrorDialog(context, "No activó los permisos para obtener el IMEI")
+                InfoDialog.newInfoDialog(context, "No activó los permisos para obtener el IMEI")
                 return
             }
             Log.d("IMEI", imei)
@@ -58,15 +61,18 @@ class HelperRetrofit {
             //TODO pasar el imei
             body.set("imei", "123")
             body.set("token", "30000")
+
+
             val loginCall = batAPIService.login(body)
             loginCall.enqueue(object : Callback<String> {
                 override fun onFailure(call: Call<String>?, t: Throwable?) {
                     t?.let {
                         Log.e(error, it.localizedMessage)
                         progressDialog.dismiss()
-                        ErrorDialog.newErrorDialog(context, it.localizedMessage)
+                        localLogin(context, user, password, callback)
                     }
                 }
+
                 override fun onResponse(call: Call<String>?, response: Response<String>?) {
                     response?.let {
                         progressDialog.dismiss()
@@ -77,9 +83,14 @@ class HelperRetrofit {
                                     this@Companion.imei = body["imei"]
                                     this@Companion.pass = body["password"]
                                     this@Companion.token = body["token"]
-                                    callback(Login.handleData(it))
+                                    Login.handleData(it)?.let { login ->
+                                        login.username = this@Companion.user
+                                        login.password = this@Companion.pass
+                                        HelperDatabase(context).saveUser(login)
+                                        callback(login)
+                                    }
                                 } else {
-                                    ErrorDialog.newErrorDialog(context, getMessage(it))
+                                    InfoDialog.newInfoDialog(context, getMessage(it))
                                 }
                             }
                         }
@@ -87,6 +98,42 @@ class HelperRetrofit {
                 }
             })
         }
+
+
+        fun localLogin(context: AppCompatActivity, username: String, password: String, callback: (Login?) -> Unit) {
+            HelperDatabase(context).getUsers { users ->
+                for (user in users) {
+                    if (user.username != null && user.password != null) {
+                        if (user.username == username && user.password == password) {
+
+                            context.runOnUiThread {
+
+                                val builder = AlertDialog.Builder(context)
+                                builder.setTitle("Sin internet")
+                                builder.setMessage("Accediendo sin conexión, puede que los catálogos estén desactualizados.")
+                                builder.setPositiveButton("OK") { _, _ ->
+                                    callback(user)
+                                }
+                                builder.setNegativeButton("Cancelar") { dialog, wich ->
+                                    dialog.dismiss()
+                                }
+                                val alertDialog = builder.create()
+                                alertDialog.setCancelable(false)
+                                alertDialog.setCanceledOnTouchOutside(false)
+                                alertDialog.show()
+
+
+                            }
+                            break
+                        }
+                    }
+                }
+                context.runOnUiThread {
+                    InfoDialog.infoDialog(context, "No se encuentra el usuario en la base de datos local").show()
+                }
+            }
+        }
+
 
         fun getCatalogos(context: AppCompatActivity, callback: (Catalogos?) -> Unit) {
             val user = this@Companion.user ?: return
@@ -99,13 +146,14 @@ class HelperRetrofit {
             body.set("login", user)
             body.set("password", password)
             body.set("imei", imei)
-            body.set("version", vscode.toString())
+            //todo cambiar vscode
+            body.set("version", "0")
 
             val catalogCall = batAPIService.getCatalogos(body)
             catalogCall.enqueue(object : Callback<String> {
                 override fun onFailure(call: Call<String>?, t: Throwable?) {
                     t?.let {
-                        ErrorDialog.newErrorDialog(context, t.localizedMessage)
+                        InfoDialog.newInfoDialog(context, t.localizedMessage)
                     }
                 }
 
@@ -116,7 +164,7 @@ class HelperRetrofit {
                                 if (getResult(body) > 0) {
                                     callback(Catalogos.handleData(body))
                                 } else {
-                                    ErrorDialog.newErrorDialog(context, getMessage(body))
+                                    InfoDialog.newInfoDialog(context, getMessage(body))
                                 }
                             }
                         }
@@ -125,6 +173,7 @@ class HelperRetrofit {
                 }
             })
         }
+
 
     }
 

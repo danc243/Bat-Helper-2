@@ -1,6 +1,5 @@
 package net.iplace.bat.login.activities
 
-import android.arch.persistence.room.Room
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -10,16 +9,10 @@ import net.iplace.bat.login.R
 import net.iplace.bat.login.adapters.RVAppListAdapter
 import net.iplace.iplacehelper.BaseActivity
 import net.iplace.iplacehelper.HelperUtils
-import net.iplace.iplacehelper.database.AppDatabase
-import net.iplace.iplacehelper.database.Catalogos
-import net.iplace.iplacehelper.dialogs.ErrorDialog
-import net.iplace.iplacehelper.dialogs.ProgressDialog
+import net.iplace.iplacehelper.dialogs.InfoDialog
+import net.iplace.iplacehelper.models.Catalogos
 import net.iplace.iplacehelper.models.Login
-import net.iplace.iplacehelper.models.Operador
-import net.iplace.iplacehelper.models.Transportista
-import net.iplace.iplacehelper.models.Unidad
 import net.iplace.iplacehelper.retrofit.HelperRetrofit
-import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.toast
 
 
@@ -41,8 +34,6 @@ class AppListActivity : BaseActivity(MainActivity::class.java) {
             finish()
         }
         btn_app_list_update_catalog.setOnClickListener { getCatalog() }
-
-
     }
 
 
@@ -50,38 +41,14 @@ class AppListActivity : BaseActivity(MainActivity::class.java) {
         HelperRetrofit.getCatalogos(this) {
             it.let { catalogos ->
                 if (catalogos != null) {
-                    saveCatalogs(catalogos)
                 } else {
                     toast("El catálogo está actualizado")
-                    getCatalogRoom {
-                        catalogosGlobal = it
-                    }
+
                 }
             }
         }
     }
 
-    private fun getCatalogRoom(callback: (Catalogos) -> Unit) {
-        val db = Room.databaseBuilder(this, AppDatabase::class.java, AppDatabase.db_name).build()
-        doAsync {
-            val version = HelperUtils.SharedPreferenceHelper(this@AppListActivity).versionCode
-            val transportistas = db.transportistaDao().getAll()
-            val unidades = db.unidadDao().getAll()
-            val operadores = db.operadorDao().getAll()
-
-            val transportistasArrayList = ArrayList<Transportista>()
-            val unidadessArrayList = ArrayList<Unidad>()
-            val operadoresArrayList = ArrayList<Operador>()
-
-            for (trans in transportistas) transportistasArrayList.add(trans)
-            for (unid in unidades) unidadessArrayList.add(unid)
-            for (op in operadores) operadoresArrayList.add(op)
-
-            val catalogos = Catalogos(version, transportistasArrayList, operadoresArrayList, unidadessArrayList)
-            callback(catalogos)
-        }
-
-    }
 
     private fun init(login: Login) {
         setTextViews(login)
@@ -109,48 +76,26 @@ class AppListActivity : BaseActivity(MainActivity::class.java) {
         val intent = packageManager.getLaunchIntentForPackage(packageNameApp)
 
         if (intent == null) {
-            ErrorDialog.newErrorDialog(this, "No tiene la aplicación '${app.nombre}' instalada")
+            InfoDialog.newInfoDialog(this, "No tiene la aplicación '${app.nombre}' instalada")
             return
         }
-
-
         val user = HelperRetrofit.user ?: return
         val pass = HelperRetrofit.pass ?: return
         val imei = HelperRetrofit.imei ?: return
         val token = HelperRetrofit.token ?: return
 
-
-
         intent.putExtra(HelperUtils.SEND_USER_INTENT, user)
         intent.putExtra(HelperUtils.SEND_PASSWORD_INTENT, pass)
         intent.putExtra(HelperUtils.SEND_IMEI_INTENT, imei)
         intent.putExtra(HelperUtils.SEND_TOKEN_INTENT, token)
-
-
         startActivity(intent)
-
-
     }
 
-    override fun onUserInteraction() {
-        super.onUserInteraction()
 
-    }
+    //region Room
 
-    private fun saveCatalogs(catalogos: Catalogos) {
-        val db = Room.databaseBuilder(this, AppDatabase::class.java, AppDatabase.db_name).build()
-        val dialog = ProgressDialog.newProgressDialog(this@AppListActivity, "Guardando catálogos")
-        dialog.show()
-        doAsync {
-            db.transportistaDao().insertAll(catalogos.transportistas)
-            db.operadorDao().insertAll(catalogos.operadores)
-            db.unidadDao().insertAll(catalogos.unidades)
-            HelperUtils.SharedPreferenceHelper(this@AppListActivity).versionCode = catalogos.version
-            catalogosGlobal = catalogos
-            dialog.dismiss()
-            toast("Catálogos actualizados.")
-        }
-    }
+    //endregion
+
 
     companion object {
 

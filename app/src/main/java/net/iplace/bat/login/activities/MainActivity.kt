@@ -10,7 +10,10 @@ import kotlinx.android.synthetic.main.activity_main.*
 import net.iplace.bat.login.R
 import net.iplace.iplacehelper.HelperPermissions
 import net.iplace.iplacehelper.HelperUtils
+import net.iplace.iplacehelper.database.HelperDatabase
+import net.iplace.iplacehelper.models.Login
 import net.iplace.iplacehelper.retrofit.HelperRetrofit
+import org.jetbrains.anko.toast
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,17 +26,40 @@ class MainActivity : AppCompatActivity() {
 
             if (HelperUtils.validateEditText(arrayOf(et_login_user, et_login_pass))) {
                 HelperRetrofit.login(this, et_login_user.text.toString(), et_login_pass.text.toString()) {
-                    it?.let {
-                        startActivity(AppListActivity.newIntent(applicationContext, it, et_login_pass.text.toString()))
+                    it?.let { login ->
+                        startActivity(AppListActivity.newIntent(applicationContext, login, et_login_pass.text.toString()))
                         finish()
                     }
                 }
-            } else {
-                // Todo campos no válidos, resaltar el error. Creo que ya lo hace Helper.validateEditText
             }
+
+/*
+//            val s = "{\n" +
+//                    "\t'result': '1',\n" +
+//                    "\t'message': 'Operación exitosa',\n" +
+//                    "\t'data': {\n" +
+//                    "\t\t'nombreUsuario': 'Administrador general',\n" +
+//                    "\t\t'nombreHub': 'Hub Mty',\n" +
+//                    "\t\t'nombrePuerta': 'Arteaga',\n" +
+//                    "\t\t'aplicaciones': [{\n" +
+//                    "\t\t\t\t'id': '1910',\n" +
+//                    "\t\t\t\t'nombre': 'Control de acceso'\n" +
+//                    "\t\t\t}, {\n" +
+//                    "\t\t\t\t'id': '1920',\n" +
+//                    "\t\t\t\t'nombre': 'Inspección'\n" +
+//                    "\t\t\t}, {\n" +
+//                    "\t\t\t\t'id': '1930',\n" +
+//                    "\t\t\t\t'nombre': 'Inspección de patrullas'\n" +
+//                    "\t\t\t}\n" +
+//                    "\t\t]\n" +
+//                    "\t}\n" +
+//                    "}\n"
+//
+//            Login.handleData(s)?.let { login ->
+//                login.username = "algo"
+//            }
+*/
         }
-
-
     }
 
 

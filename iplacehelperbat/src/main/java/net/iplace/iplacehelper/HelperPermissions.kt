@@ -5,7 +5,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.support.v4.content.PermissionChecker
 import android.support.v7.app.AppCompatActivity
-import net.iplace.iplacehelper.dialogs.ErrorDialog
+import net.iplace.iplacehelper.dialogs.InfoDialog
 
 /**
  * Created by ${DANavarro} on 10/12/2018.
@@ -43,7 +43,7 @@ class HelperPermissions {
                 if (permission == PackageManager.PERMISSION_GRANTED) {
                     return true
                 } else {
-                    ErrorDialog.newErrorDialog(context, "Versión de Android menor a API 23 (Android 6.0 Marshmallow), dar permisos manualmente desde configuración")
+                    InfoDialog.newInfoDialog(context, "Versión de Android menor a API 23 (Android 6.0 Marshmallow), dar permisos manualmente desde configuración")
                 }
             }
             return false
