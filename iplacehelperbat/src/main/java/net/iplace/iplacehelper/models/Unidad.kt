@@ -10,7 +10,14 @@ import com.google.gson.annotations.SerializedName
 
 data class Unidad(
 
+
+        @SerializedName("id")
+        @Expose
         val id: Int,
+
+        @SerializedName("idTransportista")
+        @Expose
+        var idTransportista: Int,
 
         @SerializedName("clave")
         @Expose
@@ -31,9 +38,7 @@ data class Unidad(
 
         @SerializedName("placas")
         @Expose
-        var placas: String,
+        var placas: String
 
-        @SerializedName("idTransportista")
-        @Expose
-        var idTransportista: Int
+
 )

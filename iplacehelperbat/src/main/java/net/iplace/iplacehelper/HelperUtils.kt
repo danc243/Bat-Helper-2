@@ -44,8 +44,7 @@ class HelperUtils {
 
         private const val sharedPreferencesKey = "iplaceHelperSPK"
         private const val spkVersionCode = "database_version_code_key"
-
-
+        private const val spkJsonCatalogos = "database_json_catalogos"
 
 
         fun handleGoToApp(app: Login.Aplicacion): String {
@@ -106,5 +105,12 @@ class HelperUtils {
         var versionCode: Int
             get() = sharedPreferences.getInt(spkVersionCode, 0)
             set(value) = sharedPreferences.edit().putInt(spkVersionCode, value).apply()
+
+
+        var jsonCatalogos: String
+            get() = sharedPreferences.getString(spkJsonCatalogos, "0")
+            set(value) = sharedPreferences.edit().putString(spkJsonCatalogos, value).apply()
+
+
     }
 }

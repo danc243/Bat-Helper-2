@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         btn_login.setOnClickListener {
-
             if (HelperUtils.validateEditText(arrayOf(et_login_user, et_login_pass))) {
                 HelperRetrofit.login(this, et_login_user.text.toString(), et_login_pass.text.toString()) {
                     it?.let { login ->
@@ -29,36 +28,8 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
-
-/*
-//            val s = "{\n" +
-//                    "\t'result': '1',\n" +
-//                    "\t'message': 'Operación exitosa',\n" +
-//                    "\t'data': {\n" +
-//                    "\t\t'nombreUsuario': 'Administrador general',\n" +
-//                    "\t\t'nombreHub': 'Hub Mty',\n" +
-//                    "\t\t'nombrePuerta': 'Arteaga',\n" +
-//                    "\t\t'aplicaciones': [{\n" +
-//                    "\t\t\t\t'id': '1910',\n" +
-//                    "\t\t\t\t'nombre': 'Control de acceso'\n" +
-//                    "\t\t\t}, {\n" +
-//                    "\t\t\t\t'id': '1920',\n" +
-//                    "\t\t\t\t'nombre': 'Inspección'\n" +
-//                    "\t\t\t}, {\n" +
-//                    "\t\t\t\t'id': '1930',\n" +
-//                    "\t\t\t\t'nombre': 'Inspección de patrullas'\n" +
-//                    "\t\t\t}\n" +
-//                    "\t\t]\n" +
-//                    "\t}\n" +
-//                    "}\n"
-//
-//            Login.handleData(s)?.let { login ->
-//                login.username = "algo"
-//            }
-*/
         }
     }
-
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -76,7 +47,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
-//        super.onRestoreInstanceState(savedInstanceState)
         savedInstanceState?.let {
             et_login_user.setText(it.getString("login", ""))
             et_login_pass.setText(it.getString("pass", ""))

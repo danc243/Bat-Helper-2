@@ -1,11 +1,9 @@
 package net.iplace.iplacehelper.database
 
 import android.support.v7.app.AppCompatActivity
-import net.iplace.iplacehelper.dialogs.ProgressDialog
 import net.iplace.iplacehelper.models.Catalogos
 import net.iplace.iplacehelper.models.Login
 import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.toast
 
 /**
  * Created by ${DANavarro} on 14/12/2018.
@@ -25,13 +23,10 @@ class HelperDatabase(private val context: AppCompatActivity) {
     fun saveCatalog(catalogos: Catalogos, onFinished: () -> Unit) {
 
         context.doAsync {
-            context.runOnUiThread {
-                db.catalogDao().insert(catalogos)
-                db.close()
-                onFinished()
-            }
+            db.catalogDao().insert(catalogos)
+            db.close()
+            onFinished()
         }
-
     }
 
 

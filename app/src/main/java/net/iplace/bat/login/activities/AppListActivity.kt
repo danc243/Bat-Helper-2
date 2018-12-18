@@ -3,6 +3,7 @@ package net.iplace.bat.login.activities
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v7.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_app_list.*
 import net.iplace.bat.login.R
@@ -24,6 +25,7 @@ class AppListActivity : BaseActivity(MainActivity::class.java) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_app_list)
+
         try {
             intent.getStringExtra(PUT_EXTRA_LOGIN_APPS)?.let {
                 Login.jsonToObj(it)?.let { login ->
@@ -36,6 +38,9 @@ class AppListActivity : BaseActivity(MainActivity::class.java) {
             finish()
         }
         btn_app_list_update_catalog.setOnClickListener { getCatalog() }
+
+//        mSnackbar = Snackbar.make(findViewById(R.id.rootLayout), "", Snackbar.LENGTH_SHORT)
+
     }
 
 
@@ -56,12 +61,9 @@ class AppListActivity : BaseActivity(MainActivity::class.java) {
                         it.let { catalogos ->
                             if (catalogos != null) {
                                 catalogosGlobal = catalogos
-                                progressDialog.dismiss()
-                            } else {
-                                progressDialog.dismiss()
                             }
+                            progressDialog.dismiss()
                         }
-
                     }
                 }
             }
@@ -120,4 +122,5 @@ class AppListActivity : BaseActivity(MainActivity::class.java) {
             return intent
         }
     }
+
 }
