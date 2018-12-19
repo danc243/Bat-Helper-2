@@ -26,6 +26,12 @@ interface BatAPIService {
     fun getCatalogos(@Body body: HashMap<String, String>): Call<String>
 
 
+
+
+
+
+
+
     companion object {
         fun create(): BatAPIService {
             val retrofit = Retrofit.Builder()

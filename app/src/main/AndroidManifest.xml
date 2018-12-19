@@ -24,8 +24,6 @@
         <activity android:name=".activities.AppListActivity" />
 
 
-
-
     </application>
 
 </manifest>

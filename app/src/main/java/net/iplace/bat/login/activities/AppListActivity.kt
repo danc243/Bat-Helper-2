@@ -3,13 +3,13 @@ package net.iplace.bat.login.activities
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v7.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_app_list.*
 import net.iplace.bat.login.R
 import net.iplace.bat.login.adapters.RVAppListAdapter
 import net.iplace.iplacehelper.BaseActivity
 import net.iplace.iplacehelper.HelperUtils
+import net.iplace.iplacehelper.background.ReqresDemoJob
 import net.iplace.iplacehelper.database.HelperDatabase
 import net.iplace.iplacehelper.dialogs.InfoDialog
 import net.iplace.iplacehelper.dialogs.ProgressDialog
@@ -39,7 +39,9 @@ class AppListActivity : BaseActivity(MainActivity::class.java) {
         }
         btn_app_list_update_catalog.setOnClickListener { getCatalog() }
 
-//        mSnackbar = Snackbar.make(findViewById(R.id.rootLayout), "", Snackbar.LENGTH_SHORT)
+
+//        AsyncRequestDemoJob.schedule()
+//        ReqresDemoJob.schedule()
 
     }
 

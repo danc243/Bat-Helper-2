@@ -214,6 +214,45 @@ class HelperRetrofit {
         }
 
 
+        fun asyncRequestDemo(completation: (onFinished: Catalogos?, onError: String?) -> Unit) {
+
+            val body = HashMap<String, String>()
+            body.set("login", "adm")
+            body.set("password", "dsad")
+            body.set("imei", "dasdas")
+            body.set("version", "0")
+
+
+            val call = batAPIService.getCatalogos(body)
+
+            call.enqueue(object : Callback<String> {
+                override fun onFailure(call: Call<String>?, t: Throwable?) {
+                    completation(null, t?.localizedMessage)
+                }
+
+                override fun onResponse(call: Call<String>?, response: Response<String>?) {
+                    response?.let {
+                        if (it.isSuccessful) {
+                            response.body()?.let { body ->
+                                val res = getResult(body)
+
+                                if (res > 0) {
+//                                    completation(Catalogos.handleData(body), null))
+                                    completation(Catalogos.handleData(body), null)
+                                } else {
+                                    completation(null, getMessage(body))
+                                }
+
+                            }
+                        }
+                    }
+                }
+            })
+
+
+        }
+
+
     }
 
 

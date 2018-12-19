@@ -7,19 +7,9 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
-    <!--<application>-->
-    <!--<receiver-->
-    <!--android:name="net.iplace.iplacehelper.background.ConnectivityReceiver"-->
-    <!--android:enabled="true">-->
-    <!--<intent-filter>-->
-    <!--<action android:name="android.net.conn.CONNECTIVITY_CHANGE" />-->
-    <!--</intent-filter>-->
-    <!--</receiver>-->
-    <!--</application>-->
-
-    <application>
+    <application android:name="net.iplace.iplacehelper.BatApp">
         <service
             android:name=".background.ConnectivityJob"
             android:exported="true"

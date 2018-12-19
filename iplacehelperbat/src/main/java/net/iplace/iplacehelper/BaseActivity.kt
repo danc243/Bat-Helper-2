@@ -1,15 +1,10 @@
 package net.iplace.iplacehelper
 
 
-import android.app.job.JobInfo
-import android.app.job.JobScheduler
-import android.content.ComponentName
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.v7.app.AppCompatActivity
-import net.iplace.iplacehelper.background.ConnectivityJob
 
 /**
  * Created by ${DANavarro} on 13/12/2018.
@@ -45,6 +40,11 @@ open class BaseActivity(private val mainActivity: Class<*>) : AppCompatActivity(
         disconnectHandler.removeCallbacks(disconnectCallback)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        stopDisconnectTimer()
+    }
+
     override fun onUserInteraction() {
         super.onUserInteraction()
         resetDisconnectTimer()
@@ -53,6 +53,9 @@ open class BaseActivity(private val mainActivity: Class<*>) : AppCompatActivity(
     //endregion
 
     //region Connection Listener
+
+    /*
+
 
     private fun scheludeJob() {
         if (HelperPermissions.isReceiveBootCompletedPermission(this)) {
@@ -70,18 +73,26 @@ open class BaseActivity(private val mainActivity: Class<*>) : AppCompatActivity(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        scheludeJob()
+//        scheludeJob()
     }
 
     override fun onStop() {
         super.onStop()
-        stopService(Intent(this, ConnectivityJob::class.java))
+//        stopService(Intent(this, ConnectivityJob::class.java))
     }
 
     override fun onStart() {
         super.onStart()
-        startService(Intent(this, ConnectivityJob::class.java))
+//        startService(Intent(this, ConnectivityJob::class.java))
     }
+
+
+*/
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+    }
+
 
     //endregion
 }
