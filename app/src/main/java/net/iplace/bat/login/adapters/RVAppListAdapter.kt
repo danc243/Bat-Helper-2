@@ -7,20 +7,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import net.iplace.bat.login.R
-import net.iplace.iplacehelper.models.Login
+import net.iplace.bat.login.models.Login
 
 /**
  * Created by ${DANavarro} on 06/12/2018.
  */
 
-class RVAppListAdapter(val mcontext: Context) : RecyclerView.Adapter<RVAppListAdapter.ViewHolder>() {
+class RVAppListAdapter(val mContext: Context) : RecyclerView.Adapter<RVAppListAdapter.ViewHolder>() {
 
     var array = ArrayList<Login.Aplicacion>()
     var onItemClick: ((Login.Aplicacion) -> Unit)? = null
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(mcontext).inflate(R.layout.rv_app_list_layout, parent, false));
+        return ViewHolder(LayoutInflater.from(mContext).inflate(R.layout.rv_app_list_layout, parent, false))
     }
 
     override fun getItemCount(): Int {
@@ -42,11 +42,9 @@ class RVAppListAdapter(val mcontext: Context) : RecyclerView.Adapter<RVAppListAd
 
     inner class ViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
         fun setData(app: Login.Aplicacion) {
-
             itemView.setOnClickListener {
                 onItemClick?.invoke(array[adapterPosition])
             }
-
             itemView.findViewById<TextView>(R.id.tv_rva_applist).let {
                 it.text = app.nombre
             }

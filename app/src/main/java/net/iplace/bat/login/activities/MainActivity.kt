@@ -8,9 +8,9 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import net.iplace.bat.login.R
+import net.iplace.bat.login.retrofit.HelperRetrofit
 import net.iplace.iplacehelper.HelperPermissions
 import net.iplace.iplacehelper.HelperUtils
-import net.iplace.iplacehelper.retrofit.HelperRetrofit
 
 class MainActivity : AppCompatActivity() {
 

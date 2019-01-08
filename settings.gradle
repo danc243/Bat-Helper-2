@@ -1,1 +1,1 @@
-include ':app', ':iplacehelperbat'
+include ':app'

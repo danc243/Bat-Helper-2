@@ -1,27 +1,28 @@
 package net.iplace.bat.login.activities
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_app_list.*
 import net.iplace.bat.login.R
+import net.iplace.bat.login.Utils
 import net.iplace.bat.login.adapters.RVAppListAdapter
+import net.iplace.bat.login.models.Catalogos
+import net.iplace.bat.login.models.Login
+import net.iplace.bat.login.retrofit.HelperRetrofit
 import net.iplace.iplacehelper.BaseActivity
-import net.iplace.iplacehelper.HelperUtils
-import net.iplace.iplacehelper.background.ReqresDemoJob
-import net.iplace.iplacehelper.database.HelperDatabase
 import net.iplace.iplacehelper.dialogs.InfoDialog
-import net.iplace.iplacehelper.dialogs.ProgressDialog
-import net.iplace.iplacehelper.models.Catalogos
-import net.iplace.iplacehelper.models.Login
-import net.iplace.iplacehelper.retrofit.HelperRetrofit
 
 
 class AppListActivity : BaseActivity(MainActivity::class.java) {
 
     private lateinit var catalogosGlobal: Catalogos
 
+    @SuppressLint("MissingSuperCall")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_app_list)
@@ -40,32 +41,37 @@ class AppListActivity : BaseActivity(MainActivity::class.java) {
         btn_app_list_update_catalog.setOnClickListener { getCatalog() }
 
 
-//        AsyncRequestDemoJob.schedule()
-//        ReqresDemoJob.schedule()
-
     }
 
 
     private fun getCatalog() {
-        val progressDialog = ProgressDialog.newProgressDialog(this)
-        progressDialog.show()
-        HelperRetrofit.getCatalogos(this, progressDialog) {
-            it.let { catalogos ->
-                if (catalogos != null) {
-                    HelperUtils.SharedPreferenceHelper(this).versionCode = catalogos.version
-                    HelperDatabase(this).saveCatalog(catalogos) {
-                        catalogosGlobal = catalogos
-                        progressDialog.dismiss()
+
+        HelperRetrofit.getCatalogos(this) { catalogos: Catalogos?, onError: String?, result: Int ->
+            if (onError != null) InfoDialog.newInfoDialog(this, onError, "Error")
+            if (catalogos != null) {
+                catalogosGlobal = catalogos
+                when (result) {
+                    1 -> {
+
                     }
-                } else {
-                    // Catálogo Actualizado, conseguirlo de la base de detos.
-                    HelperDatabase(this).getCatalogs {
-                        it.let { catalogos ->
-                            if (catalogos != null) {
-                                catalogosGlobal = catalogos
-                            }
-                            progressDialog.dismiss()
-                        }
+                    2 -> {
+
+                    }
+                    0 -> {
+                        val a = AlertDialog.Builder(this)
+                                .setTitle("Alerta")
+                                .setMessage("Puede que los catálogos estén desactualizado")
+                                .setPositiveButton("OK") { dialog, _ ->
+                                    dialog.dismiss()
+                                }
+                                .setNegativeButton("Cancelar") { dialog, _ ->
+                                    dialog.dismiss()
+                                    this.finish()
+                                }
+                        val dialog = a.create()
+                        dialog.setCancelable(false)
+                        dialog.setCanceledOnTouchOutside(false)
+                        dialog.show()
                     }
                 }
             }
@@ -88,29 +94,32 @@ class AppListActivity : BaseActivity(MainActivity::class.java) {
         val rv = RVAppListAdapter(this)
         rv.setElements(apps)
         rv.onItemClick = { app ->
-            //            Toast.makeText(this, app.nombre, Toast.LENGTH_SHORT).show()
             goToApp(app)
         }
         rv_app_list.adapter = rv
     }
 
     private fun goToApp(app: Login.Aplicacion) {
-        val packageNameApp = HelperUtils.handleGoToApp(app)
+
+        val packageNameApp = Utils.handleGoToApp(app)
         val intent = packageManager.getLaunchIntentForPackage(packageNameApp)
 
         if (intent == null) {
             InfoDialog.newInfoDialog(this, "No tiene la aplicación '${app.nombre}' instalada")
             return
         }
+
         val user = HelperRetrofit.user ?: return
         val pass = HelperRetrofit.pass ?: return
         val imei = HelperRetrofit.imei ?: return
         val token = HelperRetrofit.token ?: return
 
-        intent.putExtra(HelperUtils.SEND_USER_INTENT, user)
-        intent.putExtra(HelperUtils.SEND_PASSWORD_INTENT, pass)
-        intent.putExtra(HelperUtils.SEND_IMEI_INTENT, imei)
-        intent.putExtra(HelperUtils.SEND_TOKEN_INTENT, token)
+        intent.putExtra(Utils.SEND_USER_INTENT, user)
+        intent.putExtra(Utils.SEND_PASSWORD_INTENT, pass)
+        intent.putExtra(Utils.SEND_IMEI_INTENT, imei)
+        intent.putExtra(Utils.SEND_TOKEN_INTENT, token)
+        val kek = Gson().toJson(catalogosGlobal)
+        intent.putExtra("SEND_CATALOGO_INTENT", kek)
         startActivity(intent)
     }
 
