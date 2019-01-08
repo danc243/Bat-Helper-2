@@ -119,7 +119,7 @@ class AppListActivity : BaseActivity(MainActivity::class.java) {
         intent.putExtra(Utils.SEND_IMEI_INTENT, imei)
         intent.putExtra(Utils.SEND_TOKEN_INTENT, token)
         val kek = Gson().toJson(catalogosGlobal)
-        intent.putExtra("SEND_CATALOGO_INTENT", kek)
+        intent.putExtra(Utils.SEND_CATALOG_INTENT, kek)
         startActivity(intent)
     }
 

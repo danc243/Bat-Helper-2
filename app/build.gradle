@@ -49,6 +49,8 @@ dependencies {
     annotationProcessor  'android.arch.persistence.room:compiler:1.1.1'
     kapt 'android.arch.persistence.room:compiler:1.1.1'
 
+    implementation 'org.bitbucket.iplace2018:iplacehelperbat:0.1.9'
 
-    implementation 'org.bitbucket.iplace2018:iplacehelperbat:0.1.8'
+
+
 }
