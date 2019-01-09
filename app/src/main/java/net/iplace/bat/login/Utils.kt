@@ -15,6 +15,7 @@ class Utils {
         const val SEND_IMEI_INTENT = "net.iplace.iplacehelper.imei"
         const val SEND_TOKEN_INTENT = "net.iplace.iplacehelper.token"
         const val SEND_CATALOG_INTENT = "SEND_CATALOGO_INTENT"
+        const val SEND_FROMLOGIN = "SEND_FROMLOGIN"
 
         const val LoginApp = "net.iplace.bat.login"
         const val LoginAppID = 1900 // No tiene id

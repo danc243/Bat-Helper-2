@@ -118,6 +118,7 @@ class AppListActivity : BaseActivity(MainActivity::class.java) {
         intent.putExtra(Utils.SEND_PASSWORD_INTENT, pass)
         intent.putExtra(Utils.SEND_IMEI_INTENT, imei)
         intent.putExtra(Utils.SEND_TOKEN_INTENT, token)
+        intent.putExtra(Utils.SEND_FROMLOGIN, true)
         val kek = Gson().toJson(catalogosGlobal)
         intent.putExtra(Utils.SEND_CATALOG_INTENT, kek)
         startActivity(intent)

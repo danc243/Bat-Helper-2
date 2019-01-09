@@ -20,6 +20,4 @@ abstract class Base {
             return JSONObject(json).getJSONObject("data")
         }
     }
-
-
 }

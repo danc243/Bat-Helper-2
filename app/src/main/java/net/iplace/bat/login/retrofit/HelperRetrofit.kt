@@ -45,11 +45,11 @@ class HelperRetrofit {
             val progressDialog = ProgressDialog.newProgressDialog(context)
             progressDialog.show()
             val body = HashMap<String, String>()
-            body.set("login", user)
-            body.set("password", password)
+            body["login"] = user
+            body["password"] = password
             //TODO pasar el imei
-            body.set("imei", "123")
-            body.set("token", "30000")
+            body["imei"] = "123"
+            body["token"] = "30000"
 
 
             val loginCall = batAPIService.login(body)
