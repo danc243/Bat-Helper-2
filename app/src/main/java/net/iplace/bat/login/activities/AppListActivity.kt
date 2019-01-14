@@ -16,13 +16,14 @@ import net.iplace.bat.login.models.Login
 import net.iplace.bat.login.retrofit.HelperRetrofit
 import net.iplace.iplacehelper.BaseActivity
 import net.iplace.iplacehelper.dialogs.InfoDialog
+import kotlin.math.log
 
 
 class AppListActivity : BaseActivity(MainActivity::class.java) {
 
     private lateinit var catalogosGlobal: Catalogos
+    private lateinit var login: Login
 
-    @SuppressLint("MissingSuperCall")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_app_list)
@@ -30,7 +31,8 @@ class AppListActivity : BaseActivity(MainActivity::class.java) {
         try {
             intent.getStringExtra(PUT_EXTRA_LOGIN_APPS)?.let {
                 Login.jsonToObj(it)?.let { login ->
-                    init(login)
+                    this@AppListActivity.login = login
+                    init(this@AppListActivity.login)
                     getCatalog()
                 }
             }
@@ -119,6 +121,7 @@ class AppListActivity : BaseActivity(MainActivity::class.java) {
         intent.putExtra(Utils.SEND_IMEI_INTENT, imei)
         intent.putExtra(Utils.SEND_TOKEN_INTENT, token)
         intent.putExtra(Utils.SEND_FROMLOGIN, true)
+        intent.putExtra(Utils.SEND_IDAPP, app.id)
         val kek = Gson().toJson(catalogosGlobal)
         intent.putExtra(Utils.SEND_CATALOG_INTENT, kek)
         startActivity(intent)

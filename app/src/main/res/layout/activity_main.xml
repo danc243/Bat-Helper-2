@@ -70,6 +70,7 @@
                     android:layout_height="match_parent"
                     android:hint="@string/contrase_a"
                     android:inputType="textPassword"
+                    android:imeOptions="actionDone"
                     android:lines="1"
                     android:nextFocusForward="@id/btn_login"
                     android:textColor="@android:color/white" />
