@@ -1,6 +1,5 @@
 package net.iplace.bat.login.activities
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -16,7 +15,6 @@ import net.iplace.bat.login.models.Login
 import net.iplace.bat.login.retrofit.HelperRetrofit
 import net.iplace.iplacehelper.BaseActivity
 import net.iplace.iplacehelper.dialogs.InfoDialog
-import kotlin.math.log
 
 
 class AppListActivity : BaseActivity(MainActivity::class.java) {

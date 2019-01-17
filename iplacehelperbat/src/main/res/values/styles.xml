@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="BatTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/primario</item>
+        <item name="colorPrimaryDark">@color/primarioOscuro</item>
+        <item name="colorAccent">@color/acentuado</item>
+
+        <item name="android:actionBarStyle">@style/BatTheme.ActionBar</item>
+        <item name="android:statusBarColor">@color/acentuado</item>
+        <item name="android:navigationBarColor">@color/primarioOscuro</item>
+    </style>
+
+
+    <style name="BatTheme.ActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="background">@color/primario</item>
+        <item name="titleTextStyle">@style/BatTheme.ActionBar.TitleTextStyle</item>
+    </style>
+
+    <style name="BatTheme.ActionBar.TitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+
+    <style name="BatTheme.TextView.Header" parent="android:Widget.TextView">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">@dimen/Encabezado</item>
+        <item name="android:layout_marginTop">@dimen/marginVertical</item>
+    </style>
+
+
+
+    <style name="BatTheme.Separator">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">2dp</item>
+        <item name="android:background">@color/primario</item>
+        <item name="android:layout_marginTop">@dimen/marginVertical</item>
+        <item name="android:layout_marginBottom">@dimen/marginVertical</item>
+    </style>
+
+
+    <style name="BatTheme.EditText" parent="Widget.AppCompat.EditText">
+        <item name="android:inputType">text</item>
+        <item name="android:maxLength">256</item>
+        <item name="android:imeOptions">actionNext</item>
+    </style>
+
+    <style name="BatTheme.EditText.NoFocus">
+        <item name="android:clickable">false</item>
+        <item name="android:focusable">false</item>
+        <item name="android:cursorVisible">false</item>
+        <item name="android:focusableInTouchMode">false</item>
+    </style>
+
+
+
+
+    <style name="BatTheme.SignBorder">
+        <item name="android:background">@drawable/sign_border_image_view</item>
+    </style>
+
+
+    <style name="BatTheme.Button">
+        <item name="android:background">@drawable/border_button</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+
+</resources>

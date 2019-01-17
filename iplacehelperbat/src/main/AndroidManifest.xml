@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="net.iplace.iplacehelper">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <!--<application android:name=".BatAppExample">-->
+    <!--<activity android:name=".activities.SignActivity" />-->
+    <!--</application>-->
+
+    <application>
+        <!--<service-->
+        <!--android:name=".background.ConnectivityJob"-->
+        <!--android:exported="true"-->
+        <!--android:permission="android.permission.BIND_JOB_SERVICE" />-->
+
+
+        <activity android:name=".activities.SignActivity" />
+    </application>
+</manifest>

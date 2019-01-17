@@ -16,7 +16,7 @@ import net.iplace.bat.login.models.Login
 @Database(entities = [
     (Catalogos::class),
     (Login::class)
-], version = 1)
+], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun loginDao(): LoginDao
