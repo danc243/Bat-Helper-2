@@ -1,11 +1,18 @@
 package net.iplace.bat.login.activities
 
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionDeniedResponse
+import com.karumi.dexter.listener.PermissionGrantedResponse
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.single.PermissionListener
 import kotlinx.android.synthetic.main.activity_main.*
 import net.iplace.bat.login.R
 import net.iplace.bat.login.retrofit.HelperRetrofit
@@ -20,15 +27,38 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         btn_login.setOnClickListener {
-            if (HelperUtils.validateEditText(arrayOf(et_login_user, et_login_pass))) {
-                HelperRetrofit.login(this, et_login_user.text.toString(), et_login_pass.text.toString()) {
-                    it?.let { login ->
-                        startActivity(AppListActivity.newIntent(applicationContext, login))
-                        finish()
+            getIMEI {
+                it?.let { imei ->
+                    if (HelperUtils.validateEditText(arrayOf(et_login_user, et_login_pass))) {
+                        HelperRetrofit.login(this, et_login_user.text.toString(), et_login_pass.text.toString(), imei) {
+                            it?.let { login ->
+                                startActivity(AppListActivity.newIntent(applicationContext, login))
+                                finish()
+                            }
+                        }
                     }
                 }
             }
         }
+    }
+
+
+    fun getIMEI(imei: (imei: String?) -> Unit) {
+        Dexter.withActivity(this)
+                .withPermission(Manifest.permission.READ_PHONE_STATE)
+                .withListener(object : PermissionListener {
+                    override fun onPermissionGranted(response: PermissionGrantedResponse?) {
+                        imei(HelperUtils.getIMEI(this@MainActivity))
+                    }
+
+                    override fun onPermissionRationaleShouldBeShown(permission: PermissionRequest?, token: PermissionToken?) {
+
+                    }
+
+                    override fun onPermissionDenied(response: PermissionDeniedResponse?) {
+                    }
+                })
+                .check()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {

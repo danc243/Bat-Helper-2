@@ -1,6 +1,9 @@
 package net.iplace.bat.login
 
+import android.Manifest
 import android.content.Context
+import android.support.v7.app.AppCompatActivity
+import com.karumi.dexter.Dexter
 import net.iplace.bat.login.models.Login
 
 /**
@@ -52,8 +55,6 @@ class Utils {
                 else -> ""
             }
         }
-
-
     }
 
     class SharedPreferenceHelper(val context: Context) {

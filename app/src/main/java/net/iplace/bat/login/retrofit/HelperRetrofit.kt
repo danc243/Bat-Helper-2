@@ -35,8 +35,8 @@ class HelperRetrofit {
         }
 
 
-        fun login(context: AppCompatActivity, user: String, password: String, callback: (Login?) -> Unit) {
-            val imei = HelperUtils.getIMEI(context)
+        fun login(context: AppCompatActivity, user: String, password: String, imei: String?, callback: (Login?) -> Unit) {
+//            val imei = HelperUtils.getIMEI(context)
             if (imei == null) {
                 InfoDialog.newInfoDialog(context, "No activó los permisos para obtener el IMEI")
                 return
@@ -48,7 +48,8 @@ class HelperRetrofit {
             body["login"] = user
             body["password"] = password
             //TODO pasar el imei
-            body["imei"] = "123"
+//            body["imei"] = "123"
+            body["imei"] = imei
             body["token"] = "30000"
 
 
@@ -170,7 +171,7 @@ class HelperRetrofit {
                                 if (catalogos != null) {
                                     completation(catalogos, null, 1)
                                     helper.deleteAllCatalog {
-                                        helper.saveCatalog(catalogos){
+                                        helper.saveCatalog(catalogos) {
 
                                         }
                                     }
