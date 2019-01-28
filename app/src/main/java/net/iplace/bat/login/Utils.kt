@@ -1,15 +1,29 @@
 package net.iplace.bat.login
 
-import android.Manifest
 import android.content.Context
-import android.support.v7.app.AppCompatActivity
-import com.karumi.dexter.Dexter
 import net.iplace.bat.login.models.Login
 
 /**
  * Created by ${DANavarro} on 08/01/2019.
  */
 class Utils {
+    private enum class Apps(val id: Int, val packageString: String) {
+        ControlAcceso(1910, "net.iplace.bat.controlacceso"),
+        InspeccionTransportePrimario(1920, "net.iplace.bat.inspeccion"),
+        InspeccionPatrullas(1930, "net.iplace.bat.inspeccionpatrullas"),
+        EntradaMateriales(1940, "net.iplace.bat.entradamateriales"),
+        InspeccionGPS(1950, "net.iplace.bat.inspecciongps"),
+        NO_APP(0, "");
+
+        companion object {
+            fun getIdApp(id: Int): Apps {
+                for (enum in Apps.values())
+                    if (enum.id == id) return enum
+                return NO_APP
+            }
+        }
+    }
+
 
     companion object {
 
@@ -25,8 +39,6 @@ class Utils {
         const val LoginAppID = 1900 // No tiene id
 
 
-        //todo nombres no reales.
-
         const val ControlAccesoApp = "net.iplace.bat.controlacceso"
         const val ControlAccesoID = 1910
 
@@ -41,19 +53,35 @@ class Utils {
         const val EntradaMaterialesID = 1940
 
 
+        const val InspeccionGPSApp = "net.iplace.bat.inspecciongps"
+        const val InspeccionGPSID = 1950
+
+
         private const val sharedPreferencesKey = "iplaceHelperSPK"
         private const val spkVersionCode = "database_version_code_key"
         private const val spkJsonCatalogos = "database_json_catalogos"
 
 
         fun handleGoToApp(app: Login.Aplicacion): String {
-            return when (app.id) {
-                ControlAccesoID -> ControlAccesoApp
-                InspeccionID -> InspeccionApp
-                InspeccionPatrullasID -> InspeccionPatrullasApp
-                EntradaMaterialesID -> EntradaMaterialesApp
-                else -> ""
+//            return when (app.id) {
+//                ControlAccesoID -> ControlAccesoApp
+//                InspeccionID -> InspeccionApp
+//                InspeccionPatrullasID -> InspeccionPatrullasApp
+//                EntradaMaterialesID -> EntradaMaterialesApp
+//                else -> ""
+//            }
+
+            val ap = Apps.getIdApp(app.id)
+            return when (ap) {
+                Apps.ControlAcceso -> Apps.ControlAcceso.packageString
+                Apps.InspeccionTransportePrimario -> Apps.InspeccionTransportePrimario.packageString
+                Apps.InspeccionPatrullas -> Apps.InspeccionPatrullas.packageString
+                Apps.EntradaMateriales -> Apps.EntradaMateriales.packageString
+                Apps.InspeccionGPS -> Apps.InspeccionGPS.packageString
+                Apps.NO_APP -> Apps.NO_APP.packageString
             }
+
+
         }
     }
 

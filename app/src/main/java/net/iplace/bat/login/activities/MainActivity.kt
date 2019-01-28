@@ -13,6 +13,7 @@ import com.karumi.dexter.listener.PermissionDeniedResponse
 import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
 import net.iplace.bat.login.R
 import net.iplace.bat.login.retrofit.HelperRetrofit
@@ -25,6 +26,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+//        Picasso.setSingletonInstance(Picasso.Builder(this).build())
 
         btn_login.setOnClickListener {
             getIMEI {
@@ -40,6 +42,8 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+        img_fondo()
     }
 
 
@@ -83,6 +87,22 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun img_fondo() {
+
+
+        login_iv_background?.let {
+            //            Glide.with(this)
+////                    .load(R.drawable.ic_login_background)
+////                    .apply(RequestOptions().placeholder(R.drawable.ic_login_box))
+//                    .load(ContextCompat.getDrawable(this, R.drawable.ic_login_background))
+//                    .into(it)
+
+            Picasso.get().load(R.drawable.ic_login_background)
+                    .fit()
+                    .into(login_iv_background)
+        }
+
+    }
 
     companion object {
         fun newInstance(context: Context): Intent {
